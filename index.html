@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在校开发者 · 网页/小程序接单主页</title>
+<style>
+  :root {
+    --bg: #0f1220;
+    --bg2: #171b31;
+    --card: #1d2240;
+    --card2: #242a4d;
+    --text: #eef1ff;
+    --muted: #9aa3c7;
+    --accent: #6c7bff;
+    --accent2: #37d3a5;
+    --radius: 16px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", system-ui, sans-serif;
+    background: linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== 顶部导航 ===== */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(15, 18, 32, 0.82);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo { font-weight: 700; font-size: 18px; letter-spacing: 1px; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 15px;
+    transition: color .2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-cta {
+    padding: 8px 18px; border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff !important; font-weight: 600; font-size: 14px;
+  }
+
+  /* ===== Hero ===== */
+  .hero { padding: 84px 0 56px; text-align: center; }
+  .hero .tag {
+    display: inline-block; padding: 6px 16px; border-radius: 999px;
+    background: rgba(108,123,255,0.14); color: var(--accent2);
+    font-size: 13px; margin-bottom: 22px; border: 1px solid rgba(108,123,255,0.35);
+  }
+  .hero h1 {
+    font-size: clamp(30px, 5.2vw, 52px);
+    line-height: 1.35; font-weight: 800; margin-bottom: 18px;
+  }
+  .hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { color: var(--muted); font-size: clamp(15px, 2vw, 18px); max-width: 620px; margin: 0 auto; }
+
+  /* ===== 区块标题 ===== */
+  .section { padding: 64px 0; }
+  .section h2 {
+    font-size: clamp(22px, 3vw, 30px); font-weight: 700; margin-bottom: 8px;
+    text-align: center;
+  }
+  .section .sub { text-align: center; color: var(--muted); margin-bottom: 36px; font-size: 15px; }
+
+  /* ===== 服务范围 ===== */
+  .services-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+  }
+  .service {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius); padding: 26px 20px; text-align: center;
+    transition: transform .25s, border-color .25s;
+  }
+  .service:hover { transform: translateY(-5px); border-color: rgba(108,123,255,0.55); }
+  .service .icon {
+    font-size: 30px; margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .service h3 { font-size: 17px; margin-bottom: 6px; }
+  .service p { font-size: 13px; color: var(--muted); }
+
+  /* ===== 作品卡片 ===== */
+  .works-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .work {
+    border-radius: var(--radius); overflow: hidden; position: relative;
+    min-height: 220px; display: flex; align-items: flex-end; padding: 20px;
+    border: 1px solid rgba(255,255,255,0.09);
+    transition: transform .25s;
+  }
+  .work:hover { transform: translateY(-5px); }
+  .work-1 { background: linear-gradient(135deg, #3b5bff, #7a4bff); }
+  .work-2 { background: linear-gradient(135deg, #0fb8a8, #37d3a5); }
+  .work-3 { background: linear-gradient(135deg, #ff7a59, #ffb03b); }
+  .work .mask {
+    background: rgba(10,12,24,0.55); backdrop-filter: blur(3px);
+    border-radius: 12px; padding: 12px 16px; width: 100%;
+  }
+  .work .mask h3 { font-size: 16px; margin-bottom: 2px; }
+  .work .mask p { font-size: 13px; color: rgba(255,255,255,0.85); }
+
+  /* ===== 联系 ===== */
+  .contact {
+    background: var(--card); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius); padding: 40px 24px; text-align: center;
+    max-width: 620px; margin: 0 auto;
+  }
+  .contact .btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 22px; }
+  .contact .btn {
+    padding: 12px 28px; border-radius: 999px; text-decoration: none;
+    font-weight: 600; font-size: 15px; transition: opacity .2s;
+  }
+  .btn-wx { background: #22c55e; color: #fff; }
+  .btn-xy { background: #ff7d00; color: #fff; }
+  .contact .btn:hover { opacity: 0.85; }
+  .contact .hint { margin-top: 16px; color: var(--muted); font-size: 13px; }
+
+  footer { padding: 28px 0 40px; text-align: center; color: var(--muted); font-size: 13px; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 24px; }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 860px) {
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .works-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .nav-links { gap: 16px; }
+    .nav-cta { display: none; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 56px 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo">小码<span>接单</span></div>
+      <ul class="nav-links">
+        <li><a href="#works" data-nav>作品</a></li>
+        <li><a href="#services" data-nav>服务</a></li>
+        <li><a href="#contact" data-nav>联系</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">立即咨询</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="tag">学生价 · 一对一 · 售后答疑</div>
+    <h1>在校开发者，<em>网页 / 小程序定制</em>，学生价接单</h1>
+    <p>代码干净、交付及时、沟通耐心。个人主页、营销页、微信小程序、自动化脚本、AI 接口对接，都能做。</p>
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <h2>服务范围</h2>
+    <div class="sub">按需定制，从零到上线全程跟进</div>
+    <div class="services-grid">
+      <div class="service">
+        <div class="icon">&#128187;</div>
+        <h3>网页开发</h3>
+        <p>个人主页 / 落地页 / 企业官网，响应式适配</p>
+      </div>
+      <div class="service">
+        <div class="icon">&#128241;</div>
+        <h3>小程序</h3>
+        <p>微信小程序定制开发，页面 + 交互 + 上线</p>
+      </div>
+      <div class="service">
+        <div class="icon">&#9881;&#65039;</div>
+        <h3>Python 脚本</h3>
+        <p>自动化办公、数据处理、爬虫与工具脚本</p>
+      </div>
+      <div class="service">
+        <div class="icon">&#129302;</div>
+        <h3>AI 接口对接</h3>
+        <p>大模型 API 接入、智能问答、内容生成</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="works">
+  <div class="wrap">
+    <h2>作品展示</h2>
+    <div class="sub">部分案例占位，实际作品可替换为截图</div>
+    <div class="works-grid">
+      <div class="work work-1">
+        <div class="mask"><h3>企业官网落地页</h3><p>品牌展示 · 响应式布局 · 表单对接</p></div>
+      </div>
+      <div class="work work-2">
+        <div class="mask"><h3>校园二手小程序</h3><p>商品发布 · 订单管理 · 微信登录</p></div>
+      </div>
+      <div class="work work-3">
+        <div class="mask"><h3>AI 资料整理助手</h3><p>大模型接口 · 自动归档 · 摘要生成</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <h2>联系我</h2>
+    <div class="sub">学生价接单，先聊需求再报价</div>
+    <div class="contact">
+      <p style="font-size:16px; color:var(--text);">有想法？直接私聊，附上需求说明即可。</p>
+      <div class="btns">
+        <a href="#" class="btn btn-wx">微信：WeChat-Placeholder</a>
+        <a href="#" class="btn btn-xy">闲鱼：Xianyu-Placeholder</a>
+      </div>
+      <div class="hint">（占位联系方式，接单时替换为真实账号）</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">在校开发者 · 网页/小程序定制 · 学生价接单</div>
+</footer>
+
+<script>
+  // 导航滚动高亮 + 平滑定位
+  const links = document.querySelectorAll('[data-nav]');
+  const sections = ['works', 'services', 'contact'].map(id => document.getElementById(id));
+
+  window.addEventListener('scroll', () => {
+    let cur = 'works';
+    sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 120) cur = sec.id; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  }, { passive: true });
+
+  // 占位按钮点击提示
+  document.querySelectorAll('.btn-wx, .btn-xy, .nav-cta').forEach(btn => {
+    btn.addEventListener('click', e => {
+      if (btn.getAttribute('href') === '#contact' && btn.classList.contains('nav-cta')) return;
+      if (btn.textContent.includes('Placeholder')) {
+        e.preventDefault();
+        alert('这是占位联系方式，正式接单前请替换为真实微信/闲鱼账号。');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
